@@ -2,10 +2,7 @@ package com.nebula.core.controller; // Ajuste se você não criou a pasta contro
 
 import com.nebula.core.model.Product;
 import com.nebula.core.repository.ProductRepository;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +20,13 @@ public class ProductController {
 
     @GetMapping
     public List<Product> listarTodos() {
-        // O método findAll() faz o "SELECT * FROM tb_product" sozinho!
+        // O findAll() faz o "SELECT * FROM tb_product" sozinho!
         return productRepository.findAll();
+    }
+
+    @PostMapping // Agora aceitamos POST também em /api/products
+    public Product cadastrarProduto(@RequestBody Product produto) {
+        // O Java recebe o JSON, transforma em Objeto Product e salva
+        return productRepository.save(produto);
     }
 }
