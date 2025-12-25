@@ -1,0 +1,16 @@
+# Ignorar coisas do Java
+.idea/
+*.iml
+target/
+mvnw
+mvnw.cmd
+.mvn/
+
+# Ignorar coisas do Node (MUITO IMPORTANTE)
+node_modules/
+dist/
+.env
+
+# Sistema
+.DS_Store
+Thumbs.db
