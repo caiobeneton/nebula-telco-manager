@@ -33,7 +33,7 @@ public class ProductController {
     @PatchMapping("/{id}/price")
     public Product editarProduto(@PathVariable Long id, @RequestBody java.math.BigDecimal novoPreco) {
         Product produto = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
         produto.setPrice(novoPreco);
 
