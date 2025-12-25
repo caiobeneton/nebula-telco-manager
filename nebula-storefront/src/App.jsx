@@ -2,32 +2,46 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  // 1. Estado: Onde guardamos a mensagem que vem do Java
-  // Começa com "Carregando..." até o Java responder
-  const [mensagem, setMensagem] = useState('Carregando sistema...')
+  // Agora nosso estado é uma LISTA ([]) de produtos, não mais um texto
+  const [produtos, setProdutos] = useState([])
 
-  // 2. Efeito: Roda assim que a tela abre (o "OnLoad" do React)
   useEffect(() => {
-    // Chama o seu Backend
-    fetch('http://localhost:8080/api/hello')
-      .then(response => response.text()) // Converte a resposta pra texto
+    // 1. Chama a URL nova (/api/products)
+    fetch('http://localhost:8080/api/products')
+      // 2. IMPORTANTE: Avisa pro React que a resposta é JSON (não texto)
+      .then(response => response.json())
       .then(data => {
-        setMensagem(data) // Guarda o texto no estado
+        console.log("Produtos carregados:", data) // Mostra no console do navegador (F12) pra debug
+        setProdutos(data)
       })
-      .catch(error => {
-        console.error("Erro ao conectar:", error)
-        setMensagem("Erro: O Backend parece estar offline 🔴")
-      })
+      .catch(error => console.error("Erro ao buscar produtos:", error))
   }, [])
 
-  // 3. O HTML que aparece na tela
   return (
     <div className="container">
-      <h1>Nebula Storefront 🌌</h1>
-      <div className="card">
-        <h2>Status do Sistema:</h2>
-        {/* Aqui mostramos a variável 'mensagem' */}
-        <p className="status-message">{mensagem}</p>
+      <h1>Nebula Store 🌌</h1>
+      <p className="subtitle">Escolha o plano ideal para sua conexão intergaláctica.</p>
+
+      <div className="product-grid">
+        {/* Aqui acontece a Mágica: Para cada produto na lista, cria um Card */}
+        {produtos.map(produto => (
+          <div key={produto.id} className="product-card">
+            <div className="card-header">
+              <span className="badge">5G</span>
+              <h2>{produto.name}</h2>
+            </div>
+
+            <div className="card-body">
+              <p className="description">{produto.description}</p>
+              <div className="price-tag">
+                <span className="currency">R$</span>
+                <span className="value">{produto.price.toFixed(2)}</span>
+                <span className="period">/mês</span>
+              </div>
+              <button className="buy-btn">Assinar Agora</button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
