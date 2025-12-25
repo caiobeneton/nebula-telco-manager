@@ -29,4 +29,14 @@ public class ProductController {
         // O Java recebe o JSON, transforma em Objeto Product e salva
         return productRepository.save(produto);
     }
+
+    @PatchMapping("/{id}/price")
+    public Product editarProduto(@PathVariable Long id, @RequestBody java.math.BigDecimal novoPreco) {
+        Product produto = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+        produto.setPrice(novoPreco);
+
+        return  productRepository.save(produto);
+    }
 }
